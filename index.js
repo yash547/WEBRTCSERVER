@@ -2,7 +2,7 @@ const http = require("http")
 const Socket = require("websocket").server
 const server = http.createServer(()=>{})
 
-server.listen(9982,"192.168.12.72",()=>{
+server.listen(9982,"192.168.12.125",()=>{
     
 })
 
@@ -30,10 +30,18 @@ webSocket.on('request',(req)=>{
 
                 }
 
+                
+
                 const newUser = {
                     name:data.name, conn: connection
                 }
                 users.push(newUser)
+
+                connection.send(JSON.stringify({
+                    type:'store_user_startCall'
+                }))
+                
+
             break
 
             case "start_call":
@@ -46,7 +54,13 @@ webSocket.on('request',(req)=>{
                 } else{
                     connection.send(JSON.stringify({
                         type:"call_response", data:"user is not online"
+                        
                     }))
+                    users.forEach( user => {
+                        if(user.conn === connection){
+                            users.splice(users.indexOf(user),1)
+                        }
+                    })
                 }
 
             break
@@ -89,7 +103,25 @@ webSocket.on('request',(req)=>{
                     }))
                  }
 
-            break     
+            break    
+            
+            case "endVideoCallConnection":
+                let userEndVideoCallConnection = findUser(data.target)
+                if(userEndVideoCallConnection)
+                {
+                    userEndVideoCallConnection.conn.send(JSON.stringify({
+                        type:"endVideoCallConnection_Update"
+                    }))
+
+                    users.forEach( user => {
+                        if(user.conn === connection){
+                            users.splice(users.indexOf(user),1)
+                        }
+                    })
+
+                }
+            
+                break
 
             case "ice_candidate":
                 let userToReceiveIceCandidate = findUser(data.target)
@@ -111,13 +143,13 @@ webSocket.on('request',(req)=>{
 
     })
     
-    connection.on('close', () =>{
-        users.forEach( user => {
-            if(user.conn === connection){
-                users.splice(users.indexOf(user),1)
-            }
-        })
-    })
+    // connection.on('close', () =>{
+    //     users.forEach( user => {
+    //         if(user.conn === connection){
+    //             users.splice(users.indexOf(user),1)
+    //         }
+    //     })
+    // })
 
 
 
