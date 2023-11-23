@@ -18,10 +18,12 @@ webSocket.on('request',(req)=>{
         const data = JSON.parse(message.utf8Data)
         console.log(data);
         const user = findUser(data.name)
-       
         switch(data.type){
             case "store_user":
                 if(user !=null){
+
+                    
+                console.log("user already exists"+users.length)
                     //our user exists
                     connection.send(JSON.stringify({
                         type:'user already exists'
@@ -29,10 +31,13 @@ webSocket.on('request',(req)=>{
                     return
 
                 }
+
                 const newUser = {
                     name:data.name, conn: connection
                 }
                 users.push(newUser)
+
+                console.log("added data="+users.length)
 
                 connection.send(JSON.stringify({
                     type:'store_user_startCall'
@@ -104,12 +109,6 @@ webSocket.on('request',(req)=>{
                         type:"endVideoCallConnection_Update"
                     }))
 
-                    users.forEach( user => {
-            if(user.conn === connection){
-                users.splice(users.indexOf(user),1)
-            }
-        })
-
                 }
             
                 break
@@ -134,13 +133,41 @@ webSocket.on('request',(req)=>{
 
     })
     
-    connection.on('close', () =>{
-        users.forEach( user => {
-            if(user.conn === connection){
-                users.splice(users.indexOf(user),1)
+    // connection.on('close', () =>{
+
+    //     users.forEach( user => {
+    //         if(user.conn === connection){
+    //             users.splice(users.indexOf(user),1)
+    //         }
+    //     })
+        
+    //     connection.close()
+    // })
+    
+    connection.on('close', () => {
+        // Find the user associated with the closed connection
+        const closedUser = users.find(user => user.conn === connection);
+    
+        if (closedUser) {
+            // Perform cleanup for the peerConnection
+            // For example, close the peerConnection or handle other cleanup tasks
+            // Assuming you have a peerConnection property in your user object
+            if (closedUser.peerConnection) {
+                closedUser.peerConnection.close();
             }
-        })
-    })
+    
+            // Remove the user from the users array
+            const index = users.indexOf(closedUser);
+            if (index !== -1) {
+                users.splice(index, 1);
+            }
+    
+            // Close the WebSocket connection
+            connection.close();
+        }
+    });
+    
+
 
 })
 
