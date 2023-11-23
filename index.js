@@ -29,9 +29,6 @@ webSocket.on('request',(req)=>{
                     return
 
                 }
-
-                
-
                 const newUser = {
                     name:data.name, conn: connection
                 }
@@ -54,13 +51,7 @@ webSocket.on('request',(req)=>{
                 } else{
                     connection.send(JSON.stringify({
                         type:"call_response", data:"user is not online"
-                        
                     }))
-                    users.forEach( user => {
-                        if(user.conn === connection){
-                            users.splice(users.indexOf(user),1)
-                        }
-                    })
                 }
 
             break
@@ -114,10 +105,10 @@ webSocket.on('request',(req)=>{
                     }))
 
                     users.forEach( user => {
-                        if(user.conn === connection){
-                            users.splice(users.indexOf(user),1)
-                        }
-                    })
+            if(user.conn === connection){
+                users.splice(users.indexOf(user),1)
+            }
+        })
 
                 }
             
@@ -143,17 +134,13 @@ webSocket.on('request',(req)=>{
 
     })
     
-    // connection.on('close', () =>{
-    //     users.forEach( user => {
-    //         if(user.conn === connection){
-    //             users.splice(users.indexOf(user),1)
-    //         }
-    //     })
-    // })
-
-
-
-
+    connection.on('close', () =>{
+        users.forEach( user => {
+            if(user.conn === connection){
+                users.splice(users.indexOf(user),1)
+            }
+        })
+    })
 
 })
 
