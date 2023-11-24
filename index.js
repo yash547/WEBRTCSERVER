@@ -129,6 +129,51 @@ webSocket.on('request',(req)=>{
             break
 
 
+
+            case "create_voice_offer":
+                let userToVoiceReceiveOffer = findUser(data.target)
+
+                /**
+                 * the below code is used to provide the amount of response you want to deliver to another user.
+                 * 
+                 */
+
+                if (userToVoiceReceiveOffer){
+                    userToVoiceReceiveOffer.conn.send(JSON.stringify({
+                        type:"offer_voice_received",
+                        name:data.name,
+                        intakeFormMsg : data.intakeFormMsg,
+                        data:data.data.sdp
+                    }))
+                }
+            break
+
+            case "create_voice_answer":
+                let userToVoiceReceiveAnswer = findUser(data.target)
+                if(userToVoiceReceiveAnswer){
+                    userToVoiceReceiveAnswer.conn.send(JSON.stringify({
+                        type:"answer_voice_received",
+                        name: data.name,
+                        data:data.data.sdp
+                    }))
+                }
+            break
+
+
+            case "countdown_voice_update":
+                let userToVoiceReceiveCountDown = findUser(data.target)
+                if(userToVoiceReceiveCountDown){
+                    userToVoiceReceiveCountDown.conn.send(JSON.stringify({
+                       type:"countdown_voice_receive_update",
+                       videoCallTimesLeft:data.videoCallTimesLeft
+                   }))
+                }
+
+           break   
+
+
+
+
         }
 
     })
