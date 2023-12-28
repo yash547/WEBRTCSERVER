@@ -2,7 +2,7 @@ const http = require("http")
 const Socket = require("websocket").server
 const server = http.createServer(()=>{})
 
-server.listen(9982,"192.168.43.208",()=>{
+server.listen(9982,"192.168.12.99",()=>{
     
 })
 
@@ -170,6 +170,83 @@ webSocket.on('request',(req)=>{
                 }
 
            break   
+
+
+
+           case "store_chat_user":
+            if(user !=null){
+
+                
+            console.log("user already exists"+users.length)
+                //our user exists
+                connection.send(JSON.stringify({
+                    type:'user chat already exists'
+                }))
+                return
+
+            }
+
+            const newChatUser = {
+                name:data.name, conn: connection
+            }
+            users.push(newChatUser)
+
+            console.log("added data="+users.length)
+
+            connection.send(JSON.stringify({
+                type:'store_user_chatCall'
+            }))
+            
+
+        break
+
+
+        case "start_chat_call":
+            let userToChat = findUser(data.target)
+
+            if(userToChat){
+                connection.send(JSON.stringify({
+                    type:"call_chat_response", data:"user is ready for chat"
+                }))
+            } else{
+                connection.send(JSON.stringify({
+                    type:"call_chat_response", data:"user is not online Chat"
+                }))
+            }
+
+        break
+
+
+           case "create_chat_offer":
+            let userToReceivechatOffer = findUser(data.target)
+
+            /**
+             * the below code is used to provide the amount of response you want to deliver to another user.
+             * 
+             */
+
+            if (userToReceivechatOffer){
+                userToReceivechatOffer.conn.send(JSON.stringify({
+                    type:"offer_chat_received",
+                    name:data.name,
+                    intakeFormMsg : data.intakeFormMsg,
+                    data:data.data.sdp
+                }))
+            }
+        break
+
+        case "create_chat_answer":
+            let userToChatReceiveAnswer = findUser(data.target)
+            if(userToChatReceiveAnswer){
+                userToChatReceiveAnswer.conn.send(JSON.stringify({
+                    type:"answer_chat_received",
+                    name: data.name,
+                    data:data.data.sdp
+                }))
+            }
+        break
+
+
 
 
 
