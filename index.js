@@ -248,6 +248,18 @@ webSocket.on('request',(req)=>{
 
 
 
+  case "tyingAxpertzUpdate":
+            let userToChatTypingReceiveAnswer = findUser(data.target)
+            if(userToChatTypingReceiveAnswer){
+                userToChatTypingReceiveAnswer.conn.send(JSON.stringify({
+                    type:"answer_tUpdate_business_received",
+                    name: data.name,
+                    intakeFormMsg:data.intakeFormMsg
+                }))
+            }
+        break
+
+
 
 
 
