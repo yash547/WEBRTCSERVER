@@ -2,7 +2,7 @@ const http = require("http")
 const Socket = require("websocket").server
 const server = http.createServer(()=>{})
 
-server.listen(9982,"192.168.12.99",()=>{
+server.listen(9982,"192.168.43.208",()=>{
     
 })
 
@@ -270,6 +270,33 @@ webSocket.on('request',(req)=>{
                 }))
             }
         break
+
+
+
+
+
+        case "refreshAxpertzUpdate":
+            let userToChatRefreshReceiveAnswer = findUser(data.target)
+            if(userToChatRefreshReceiveAnswer){
+                userToChatRefreshReceiveAnswer.conn.send(JSON.stringify({
+                    type:"answer_tUpdatereferesh_business_received",
+                    name: data.name
+                }))
+            }
+        break
+
+
+
+        case "refereshAxpertzUser":
+            let userToChatrefereshReceivesAnswer = findUser(data.target)
+            if(userToChatrefereshReceivesAnswer){
+                userToChatrefereshReceivesAnswer.conn.send(JSON.stringify({
+                    type:"answer_tUpdatereferesh_user_received",
+                    name: data.name 
+                }))
+            }
+        break
+
 
 
         }
