@@ -241,6 +241,7 @@ webSocket.on('request',(req)=>{
                 userToChatReceiveAnswer.conn.send(JSON.stringify({
                     type:"answer_chat_received",
                     name: data.name,
+                    intakeFormMsg : data.intakeFormMsg,
                     data:data.data.sdp
                 }))
             }
