@@ -241,7 +241,7 @@ webSocket.on('request',(req)=>{
                 userToChatReceiveAnswer.conn.send(JSON.stringify({
                     type:"answer_chat_received",
                     name: data.name,
-                    intakeFormMsg : data.intakeFormMsg,
+                    intakeFormMsg : data.intakeFormMsg, // changes done 23-01-2024
                     data:data.data.sdp
                 }))
             }
@@ -297,6 +297,18 @@ webSocket.on('request',(req)=>{
                 }))
             }
         break
+
+
+            case "countdown_chat_update":
+                let userTochatReceiveCountDown = findUser(data.target)
+                if(userTochatReceiveCountDown){
+                    userTochatReceiveCountDown.conn.send(JSON.stringify({
+                       type:"countdown_chat_receive_update",
+                       videoCallTimesLeft:data.videoCallTimesLeft
+                   }))
+                }
+
+           break   
 
 
 
