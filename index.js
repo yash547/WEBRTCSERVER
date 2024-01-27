@@ -2,7 +2,7 @@ const http = require("http")
 const Socket = require("websocket").server
 const server = http.createServer(()=>{})
 
-server.listen(9982,"192.168.43.208",()=>{
+server.listen(9982,()=>{
     
 })
 
