@@ -308,7 +308,34 @@ webSocket.on('request',(req)=>{
                    }))
                 }
 
-           break   
+           break
+
+                case "endConsultancyChatConnection":
+            let userToconsultancyEndChat = findUser(data.target)
+            if(userToconsultancyEndChat)
+            {
+                userToconsultancyEndChat.conn.send(JSON.stringify({
+                    type:"endConsultancyChatConnectionUpdate",
+                    name : data.name
+                }))
+
+            }
+        
+            break
+
+            case "endConsultancyChatConnectionBusiness":
+                let userToconsultancyEndChatBusiness = findUser(data.target)
+                if(userToconsultancyEndChatBusiness)
+                {
+                    userToconsultancyEndChatBusiness.conn.send(JSON.stringify({
+                        type:"endConsultancyChatConnectionBusinessUpdate",
+                        name : data.name
+                    }))
+    
+                }
+            
+                break
+   
 
 
 
