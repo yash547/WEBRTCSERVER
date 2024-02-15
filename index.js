@@ -74,8 +74,7 @@ webSocket.on('request',(req)=>{
                         type:"offer_received",
                         name:data.name,
                         intakeFormMsg : data.intakeFormMsg,
-                        data:data.data.sdp,
-                        videoCallTimesLeft:data.videoCallTimesLeft
+                        data:data.data.sdp
                     }))
                 }
             break
@@ -120,7 +119,7 @@ webSocket.on('request',(req)=>{
                 break
 
             case "endVideoCallConnectionuser":
-                let userEndVideoCallConnectionuser = findUser(data.target)
+                let userEndVideoCallConnectionuser = findUser(data.name)
                 if(userEndVideoCallConnectionuser)
                 {
                     userEndVideoCallConnectionuser.conn.send(JSON.stringify({
