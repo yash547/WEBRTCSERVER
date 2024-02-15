@@ -119,12 +119,11 @@ webSocket.on('request',(req)=>{
                 break
 
             case "endVideoCallConnectionuser":
-                let userEndVideoCallConnectionuser = findUser(data.name)
+                let userEndVideoCallConnectionuser = findUser(data.target)
                 if(userEndVideoCallConnectionuser)
                 {
                     userEndVideoCallConnectionuser.conn.send(JSON.stringify({
-                        type:"endVideoCallConnection_Updateuser",
-                        name : data.name
+                        type:"endVideoCallConnection_Updateuser" 
                     }))
 
                 }
@@ -191,6 +190,18 @@ webSocket.on('request',(req)=>{
 
            break   
 
+           
+           case "endVoiceCallConnectionuser":
+            let userEndVoiceCallConnectionuser = findUser(data.target)
+            if(userEndVoiceCallConnectionuser)
+            {
+                userEndVoiceCallConnectionuser.conn.send(JSON.stringify({
+                    type:"endVoiceCallConnection_Updateuser" 
+                }))
+
+            }
+        
+            break
 
 
            case "store_chat_user":
