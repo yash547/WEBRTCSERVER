@@ -74,7 +74,8 @@ webSocket.on('request',(req)=>{
                         type:"offer_received",
                         name:data.name,
                         intakeFormMsg : data.intakeFormMsg,
-                        data:data.data.sdp
+                        data:data.data.sdp,
+                        videoCallTimesLeft:data.videoCallTimesLeft
                     }))
                 }
             break
@@ -101,6 +102,11 @@ webSocket.on('request',(req)=>{
 
             break    
             
+                 /**
+                  *  The below code is used to disconnect the video call from business to user
+                  * 
+                  */
+
             case "endVideoCallConnection":
                 let userEndVideoCallConnection = findUser(data.target)
                 if(userEndVideoCallConnection)
@@ -112,6 +118,21 @@ webSocket.on('request',(req)=>{
                 }
             
                 break
+
+            case "endVideoCallConnectionuser":
+                let userEndVideoCallConnectionuser = findUser(data.target)
+                if(userEndVideoCallConnectionuser)
+                {
+                    userEndVideoCallConnectionuser.conn.send(JSON.stringify({
+                        type:"endVideoCallConnection_Updateuser",
+                        name : data.name
+                    }))
+
+                }
+            
+                break
+
+
 
             case "ice_candidate":
                 let userToReceiveIceCandidate = findUser(data.target)
