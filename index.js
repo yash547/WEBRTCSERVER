@@ -119,12 +119,11 @@ webSocket.on('request',(req)=>{
                 break
 
             case "endVideoCallConnectionuser":
-                let userEndVideoCallConnectionuser = findUser(data.name)
+                let userEndVideoCallConnectionuser = findUser(data.target)
                 if(userEndVideoCallConnectionuser)
                 {
                     userEndVideoCallConnectionuser.conn.send(JSON.stringify({
-                        type:"endVideoCallConnection_Updateuser",
-                        name : data.name
+                        type:"endVideoCallConnection_Updateuser" 
                     }))
 
                 }
