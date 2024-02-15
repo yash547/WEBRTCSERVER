@@ -190,6 +190,18 @@ webSocket.on('request',(req)=>{
 
            break   
 
+           
+           case "endVoiceCallConnectionuser":
+            let userEndVoiceCallConnectionuser = findUser(data.target)
+            if(userEndVoiceCallConnectionuser)
+            {
+                userEndVoiceCallConnectionuser.conn.send(JSON.stringify({
+                    type:"endVoiceCallConnection_Updateuser" 
+                }))
+
+            }
+        
+            break
 
 
            case "store_chat_user":
