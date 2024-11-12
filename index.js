@@ -89,6 +89,65 @@ webSocket.on('request',(req)=>{
                     }))
                 }
             break
+            /**
+             * 
+             * The below code will be for re-connecting of video call from axpertz_business
+             * to axpertz users.
+             * 
+             */
+
+            case "create_offer_reconnect_video_call":
+                let userToBusinessUserReceiveOffer = findUser(data.target)
+
+                /**
+                 * the below code is used to provide the amount of response you want to deliver to another user.
+                 * 
+                 */
+
+                if (userToBusinessUserReceiveOffer){
+                    userToBusinessUserReceiveOffer.conn.send(JSON.stringify({
+                        type:"offer_received_reconnect_video_call",
+                        name:data.name,
+                        intakeFormMsg : data.intakeFormMsg,
+                        data:data.data.sdp
+                    }))
+                }
+            break
+
+            case "create_answer_reconnect_video_call":
+                let businessUserToReceiveAnswer = findUser(data.target)
+                if(businessUserToReceiveAnswer){
+                    businessUserToReceiveAnswer.conn.send(JSON.stringify({
+                        type:"answer_reconnect_video_call",
+                        name: data.name,
+                        data:data.data.sdp
+                    }))
+                }
+            break
+
+
+            case "create_answer_reconnect_from_business_video_call":
+                let answerBusinessUserToReceiveAnswer = findUser(data.target)
+                if(answerBusinessUserToReceiveAnswer){
+                    answerBusinessUserToReceiveAnswer.conn.send(JSON.stringify({
+                        type:"answer_reconnect_from_business_video_call",
+                        name: data.name,
+                        data:data.data.sdp
+                    }))
+                }
+            break
+
+            case "create_answer_offer_reconnect_video_call_business":
+                let answerOfferBusinessUserToReceiveAnswer = findUser(data.target)
+                if(answerOfferBusinessUserToReceiveAnswer){
+                    answerOfferBusinessUserToReceiveAnswer.conn.send(JSON.stringify({
+                        type:"answer_offer_reconnect_from_business_video_call",
+                        name: data.name,
+                        data:data.data.sdp
+                    }))
+                }
+            break
+
 
             case "countdown_update":
                  let userToReceiveCountDown = findUser(data.target)
