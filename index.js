@@ -92,9 +92,38 @@ webSocket.on('request',(req)=>{
             /**
              * 
              * The below code will be for re-connecting of video call from axpertz_business
-             * to axpertz users.
+             * to axpertz users and axpertz user to axpertz business.
              * 
              */
+
+            case "store_user_reconnect":
+                if(user !=null){
+
+                    
+                console.log("user already exists"+users.length)
+                    //our user exists
+                    connection.send(JSON.stringify({
+                        type:'user already exists'
+                    }))
+                    return
+
+                }
+
+                const newUsers = {
+                    name:data.name, conn: connection
+                }
+                users.push(newUser)
+
+                console.log("added data="+newUsers.length)
+
+                connection.send(JSON.stringify({
+                    type:'store_user_reconnect_startCall'
+                }))
+                
+
+            break
+
+
 
             case "create_offer_reconnect_video_call":
                 let userToBusinessUserReceiveOffer = findUser(data.target)
@@ -147,6 +176,9 @@ webSocket.on('request',(req)=>{
                     }))
                 }
             break
+
+
+
 
 
             case "countdown_update":
