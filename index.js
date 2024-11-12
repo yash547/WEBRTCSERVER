@@ -109,12 +109,12 @@ webSocket.on('request',(req)=>{
 
                 }
 
-                const newUsers = {
+                const newReconnectUsers = {
                     name:data.name, conn: connection
                 }
-                users.push(newUser)
+                users.push(newReconnectUsers)
 
-                console.log("added data="+newUsers.length)
+                console.log("added data="+newReconnectUsers.length)
 
                 connection.send(JSON.stringify({
                     type:'store_user_reconnect_startCall'
