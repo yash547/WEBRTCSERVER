@@ -21,17 +21,17 @@ webSocket.on('request', (req) => {
         const user = findUser(data.name)
         switch (data.type) {
             case "store_user":
-                if (user != null) {
+                // if (user != null) {
 
 
-                    console.log("user already exists" + users.length)
-                    //our user exists
-                    connection.send(JSON.stringify({
-                        type: 'user already exists'
-                    }))
-                    return
+                //     console.log("user already exists" + users.length)
+                //     //our user exists
+                //     connection.send(JSON.stringify({
+                //         type: 'user already exists'
+                //     }))
+                //     return
 
-                }
+                // }
 
                 const newUser = {
                     name: data.name, conn: connection
@@ -372,56 +372,56 @@ webSocket.on('request', (req) => {
              */
 
 
-            case "create_offer_rev":
-                let userReToReceiveOffer = findUser(data.target)
+            // case "create_offer_rev":
+            //     let userReToReceiveOffer = findUser(data.target)
 
-                /**
-                 * the below code is used to provide the amount of re-response you want to deliver to another user.
-                 * 
-                 */
+            //     /**
+            //      * the below code is used to provide the amount of re-response you want to deliver to another user.
+            //      * 
+            //      */
 
-                if (userReToReceiveOffer) {
+            //     if (userReToReceiveOffer) {
 
-                    console.log("inside userReToReceiveOffer=", userReToReceiveOffer);
+            //         console.log("inside userReToReceiveOffer=", userReToReceiveOffer);
 
-                    userReToReceiveOffer.conn.send(JSON.stringify({
-                        type: "offer_received_rev",
-                        name: data.name,
-                        intakeFormMsg: data.intakeFormMsg,
-                        data: data.data.sdp
-                    }))
+            //         userReToReceiveOffer.conn.send(JSON.stringify({
+            //             type: "offer_received_rev",
+            //             name: data.name,
+            //             intakeFormMsg: data.intakeFormMsg,
+            //             data: data.data.sdp
+            //         }))
 
-                    console.log("inside1 userReToReceiveOffer=", userReToReceiveOffer);
+            //         console.log("inside1 userReToReceiveOffer=", userReToReceiveOffer);
 
-                }
-                else {
+            //     }
+            //     else {
 
-                    console.log("else userReToReceiveOffer=", userReToReceiveOffer);
-                }
-                break
+            //         console.log("else userReToReceiveOffer=", userReToReceiveOffer);
+            //     }
+            //     break
 
 
 
-            case "create_answer_rev":
-                let userToReceiveAnswerRe = findUser(data.target)
-                if (userToReceiveAnswerRe) {
+            // case "create_answer_rev":
+            //     let userToReceiveAnswerRe = findUser(data.target)
+            //     if (userToReceiveAnswerRe) {
 
-                    console.log("inside create_answer_rev=", userToReceiveAnswerRe);
+            //         console.log("inside create_answer_rev=", userToReceiveAnswerRe);
 
-                    userToReceiveAnswerRe.conn.send(JSON.stringify({
-                        type: "answer_received_rev",
-                        name: data.name,
-                        data: data.data.sdp
-                    }))
+            //         userToReceiveAnswerRe.conn.send(JSON.stringify({
+            //             type: "answer_received_rev",
+            //             name: data.name,
+            //             data: data.data.sdp
+            //         }))
 
-                    console.log("inside1 create_answer_rev=", userToReceiveAnswerRe);
-                }
-                else {
+            //         console.log("inside1 create_answer_rev=", userToReceiveAnswerRe);
+            //     }
+            //     else {
 
-                    console.log("else create_answer_rev=", userToReceiveAnswerRe);
+            //         console.log("else create_answer_rev=", userToReceiveAnswerRe);
 
-                }
-                break
+            //     }
+            //     break
 
 
 
