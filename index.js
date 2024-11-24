@@ -464,6 +464,19 @@ webSocket.on('request', (req) => {
     });
 
 
+    connection.on('closeEndUser', () => {
+        // Find the user associated with the closed connection
+        const closedUser = users.find(user => user.conn === connection);
+
+        if (closedUser) {
+
+            closedUser.conn.send(JSON.stringify({
+                type: "BusinessEnd"
+            }))
+          
+        }
+    });
+
 
 })
 
